@@ -8,7 +8,7 @@ import model.Entry;
 public interface ICrud {
 	
 	public void addEntry(Entry entry);
-	public void removeEntry(String keyword);
+	public void removeEntry(Entry keyword);
 	public ObservableList<EntryTable> getAllEntries(ObservableList<EntryTable> tableDataList);
 	public void updateEntry(Entry entry);
 	public boolean search(String keyword);

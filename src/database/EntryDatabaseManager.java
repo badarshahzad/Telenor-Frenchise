@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import controllers.EntryTable;
+import controllers.MainController;
 import entry.database.interfaces.ICrud;
 import model.Entry;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ public class EntryDatabaseManager implements ICrud{
 	
 	private static final String CREATE_TABLE = "CREATE TABLE if not exists entryTable"
 			+ "(entryId INTEGER PRIMARY KEY,"
+			+ "date varchar (30),"
 			+ "empName varchar (30),"
 			+ "hlr int, "
 			+ "sim int,"
@@ -30,7 +32,8 @@ public class EntryDatabaseManager implements ICrud{
 			+ "easyP int,"
 			+ "easyPR int,"
 			+ "cash int,"
-			+ "expenses int)";
+			+ "expenses int,"
+			+ "comment text)";
 			
 	public EntryDatabaseManager(){
 		openConnection();
@@ -55,21 +58,23 @@ public class EntryDatabaseManager implements ICrud{
 	public void addEntry(Entry entry) {
 		// TODO Auto-generated method stub
 		try {
-	          String sql = "INSERT INTO entryTable (empName,hlr,sim,card,easyL,easyLR,easyP,easyPR,cash,expenses) "
-	          		+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
+	          String sql = "INSERT INTO entryTable (date,empName,hlr,sim,card,easyL,easyLR,easyP,easyPR,cash,expenses,comment) "
+	          		+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	          
 	          prepStmt = connection.prepareStatement(sql);
-	          prepStmt.setString(1, entry.getSelectedEmployee());
-	          prepStmt.setInt(2, entry.getHrl());
-	          prepStmt.setInt(3, entry.getSim());
-	          prepStmt.setInt(4, entry.getCard());
-	          prepStmt.setInt(5, entry.getEasyLoad());
-	          prepStmt.setInt(6, entry.getEasyLoadReturn());
-	          prepStmt.setInt(7, entry.getEasyPaisa());
-	          prepStmt.setInt(8, entry.getEasyPaisaReturn());
-	          prepStmt.setInt(9, entry.getCash());
-	          prepStmt.setInt(10, entry.getExpenses()
-	        		  );
+	          prepStmt.setString(1, entry.getDate());
+	          prepStmt.setString(2, entry.getSelectedEmployee());
+	          prepStmt.setInt(3, entry.getHrl());
+	          prepStmt.setInt(4, entry.getSim());
+	          prepStmt.setInt(5, entry.getCard());
+	          prepStmt.setInt(6, entry.getEasyLoad());
+	          prepStmt.setInt(7, entry.getEasyLoadReturn());
+	          prepStmt.setInt(8, entry.getEasyPaisa());
+	          prepStmt.setInt(9, entry.getEasyPaisaReturn());
+	          prepStmt.setInt(10, entry.getCash());
+	          prepStmt.setInt(11, entry.getExpenses());
+	          prepStmt.setString(12, entry.getComment());
+	        		  
 	          prepStmt.executeUpdate();
 	          
 
@@ -84,8 +89,28 @@ public class EntryDatabaseManager implements ICrud{
 	}
 
 	@Override
-	public void removeEntry(String keyword) {
+	public void removeEntry(Entry entry) {
 		// TODO Auto-generated method stub
+		
+		String sql = "DELETE from entryTable WHERE entryId = ?";
+		
+		try {
+
+			
+			prepStmt = connection.prepareStatement(sql);
+			prepStmt.setInt(1, entry.getEntryNumber());
+			prepStmt.executeUpdate();
+			
+			System.out.println("Removing entry number is : "+ entry.getEntryNumber());
+			
+			System.out.println(">>> Remove entry working properly.");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			System.out.println("*** Delete Entry is not working.");
+		}
 		
 	}
 
@@ -101,16 +126,21 @@ public class EntryDatabaseManager implements ICrud{
 			prepStmt = connection.prepareStatement(sql);
 			ResultSet rs = 	prepStmt.executeQuery();
 			
+			int entryNumber = 0;
 			while(rs.next()){
 		
-				tableDataList.add(new EntryTable(rs.getInt("entryId"),rs.getString("empName"),rs.getInt("hlr"),rs.getInt("sim"),rs.getInt("card")
+				tableDataList.add(new EntryTable(rs.getInt("entryId"),rs.getString("date"),rs.getString("empName"),rs.getInt("hlr"),rs.getInt("sim"),rs.getInt("card")
 						,rs.getInt("easyL"),rs.getInt("easyLR"),rs.getInt("easyP"),rs.getInt("easyPR")
-						,rs.getInt("cash"),rs.getInt("expenses")));
+						,rs.getInt("cash"),rs.getInt("expenses"), rs.getString("comment")));
 				
-				
-
+				//this entryNumber is a variable to remember the last entry and to show on main screen 
+				entryNumber = rs.getInt("entryId");
 			}
 			prepStmt.close();
+			
+			//the last entry number is setting into main screen
+			MainController.setEntryNumber(String.valueOf(entryNumber));
+			
 			
 			
 			
@@ -127,28 +157,29 @@ public class EntryDatabaseManager implements ICrud{
 	public void updateEntry(Entry entry) {
 		// TODO Auto-generated method stub
 		
-		String sql = "Insert or Replace into entryTable (entryId,empName,hlr,sim,card,easyL,easyLR,easyP,easyPR,cash,expenses) "
-	          		+ "VALUES (?,?,?,?,?,?,?,?,?,? ,( SELECT entryId FROM entryTable WHERE entryId = ?))";
-				
+		String sql = "Insert or Replace into entryTable (entryId,date,empName,hlr,sim,card,easyL,easyLR,easyP,easyPR,cash,expenses,comment) "
+	          		+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,? ,( SELECT entryId FROM entryTable WHERE entryId = ?))";
 		
 		try {
 
 			 prepStmt = connection.prepareStatement(sql);
 			 prepStmt.setInt(1, entry.getEntryNumber());
-	          prepStmt.setString(2, entry.getSelectedEmployee());
-	          prepStmt.setInt(3, entry.getHrl());
-	          prepStmt.setInt(4, entry.getSim());
-	          prepStmt.setInt(5, entry.getCard());
-	          prepStmt.setInt(6, entry.getEasyLoad());
-	          prepStmt.setInt(7, entry.getEasyLoadReturn());
-	          prepStmt.setInt(8, entry.getEasyPaisa());
-	          prepStmt.setInt(9, entry.getEasyPaisaReturn());
-	          prepStmt.setInt(10, entry.getCash());
-	          prepStmt.setInt(11, entry.getExpenses());
+			 prepStmt.setString(2, entry.getDate());
+	          prepStmt.setString(3, entry.getSelectedEmployee());
+	          prepStmt.setInt(4, entry.getHrl());
+	          prepStmt.setInt(5, entry.getSim());
+	          prepStmt.setInt(6, entry.getCard());
+	          prepStmt.setInt(7, entry.getEasyLoad());
+	          prepStmt.setInt(8, entry.getEasyLoadReturn());
+	          prepStmt.setInt(9, entry.getEasyPaisa());
+	          prepStmt.setInt(10, entry.getEasyPaisaReturn());
+	          prepStmt.setInt(11, entry.getCash());
+	          prepStmt.setInt(12, entry.getExpenses());
+	          prepStmt.setString(13, entry.getComment());
 	        		  
 	          prepStmt.executeUpdate();
 	          
-	         
+	         System.out.println("Updated entry number: "+entry.getEntryNumber());
 	          
 	          System.out.println("Selected employee values"+ entry.getSelectedEmployee());
 

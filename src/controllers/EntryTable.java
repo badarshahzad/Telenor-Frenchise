@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 public class EntryTable extends RecursiveTreeObject<EntryTable> {
 	
 	ObservableValue<Number> entry1;
+	StringProperty date1;
 	StringProperty name1; 
 	ObservableValue<Number> hlr1;
 	ObservableValue<Number> sim1;
@@ -19,12 +20,14 @@ public class EntryTable extends RecursiveTreeObject<EntryTable> {
 	ObservableValue<Number> easyPaisaReturn1;
 	ObservableValue<Number> cash1;
 	ObservableValue<Number> expenses1;
+	StringProperty comment1;
 	
-	public EntryTable(int entry,String name,int hlr, int sim, int card, int easyLoad, int easyLoadReturn, int easyPaisa
-			,int easyPaisaReturn,int cash, int expenses) {
+	public EntryTable(int entry,String date, String name,int hlr, int sim, int card, int easyLoad, int easyLoadReturn, int easyPaisa
+			,int easyPaisaReturn,int cash, int expenses,String comment) {
 		
 		
 		this.entry1 = new SimpleIntegerProperty( entry);
+		this.date1  = new SimpleStringProperty(date);
 		this.name1	= new SimpleStringProperty(name);
 		this.hlr1	= new SimpleIntegerProperty(hlr);
 		this.sim1	= new SimpleIntegerProperty(sim);
@@ -35,6 +38,7 @@ public class EntryTable extends RecursiveTreeObject<EntryTable> {
 		this.easyPaisaReturn1	= new SimpleIntegerProperty(easyPaisaReturn);
 		this.cash1	= new SimpleIntegerProperty(cash);
 		this.expenses1	= new SimpleIntegerProperty(expenses);
+		this.comment1 = new SimpleStringProperty(comment);
 	}
 
 

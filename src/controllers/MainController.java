@@ -1,15 +1,21 @@
 package controllers;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 
-import javax.swing.text.Position;
 
 import org.controlsfx.control.Notifications;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -27,10 +33,12 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.util.converter.LocalDateStringConverter;
 import model.Entry;
 
 public class MainController implements Initializable{
@@ -45,6 +53,12 @@ public class MainController implements Initializable{
     @FXML
     private JFXComboBox<String> chosedEmployee;
     
+    @FXML
+    private AnchorPane fieldsAnchor;
+    
+    
+    public static TextField entryField = new TextField();
+
 	@FXML
     private TextField hlrField;
 
@@ -72,6 +86,12 @@ public class MainController implements Initializable{
     @FXML
     private TextField expensesField;
 
+    @FXML
+    private JFXTextArea commentField;
+    
+    @FXML
+    private JFXDatePicker date;
+    
     @FXML
     private JFXButton newBt;
 
@@ -106,6 +126,7 @@ public class MainController implements Initializable{
     private JFXButton detailsBt;
     
     private JFXTreeTableColumn<EntryTable, Number> entryCol  = new JFXTreeTableColumn<EntryTable,Number>("Entry");
+    private JFXTreeTableColumn<EntryTable, String> dateCol  = new JFXTreeTableColumn<EntryTable,String>("Date");
     private JFXTreeTableColumn<EntryTable, String> nameCol = new JFXTreeTableColumn<EntryTable, String>("Name");
     private JFXTreeTableColumn<EntryTable, Number> hlrCol = new JFXTreeTableColumn<EntryTable, Number>("Hlr");
     private JFXTreeTableColumn<EntryTable, Number> simCol = new JFXTreeTableColumn<EntryTable, Number>("Sim");
@@ -116,6 +137,7 @@ public class MainController implements Initializable{
     private JFXTreeTableColumn<EntryTable, Number> easyPaisaReturnCol = new JFXTreeTableColumn<EntryTable, Number>("Easypaisa Return");
     private JFXTreeTableColumn<EntryTable, Number> cashCol = new JFXTreeTableColumn<EntryTable, Number>("Cash");
     private JFXTreeTableColumn<EntryTable, Number> expensesCol = new JFXTreeTableColumn<EntryTable, Number>("Expenses");
+    private JFXTreeTableColumn<EntryTable, String> commentCol = new JFXTreeTableColumn<EntryTable, String>("Comment");
     
     ObservableList<EntryTable> tableDataList = FXCollections.observableArrayList();
     
@@ -125,12 +147,11 @@ public class MainController implements Initializable{
     EntryDatabaseManager entryDatabaseManager ;
 	
 	Entry entry = new Entry();
+	
     public MainController() {
 		// TODO Auto-generated constructor stub
     	
-    	entryDatabaseManager = new EntryDatabaseManager();
-		tableDataList = entryDatabaseManager.getAllEntries(tableDataList);
-		//chosedEmployee.getSelectionModel().select(0);
+		//tableDataList = entryDatabaseManager.getAllEntries(tableDataList);
     	
 	}
      
@@ -139,6 +160,7 @@ public class MainController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 
+		entryDatabaseManager = new EntryDatabaseManager();
 		setFieldsValueZero();
 		addListTable();
 
@@ -156,8 +178,8 @@ public class MainController implements Initializable{
 				
 				Notifications.create()
 				.title("Entry Failed ")
-				.text("You entry is faild due to invalid input.\n"
-						+ "Please give valid input")
+				.text("Please select the name of Employee.\n"
+						+ "  ")
 				.hideAfter(Duration.seconds(5))
 				.showWarning();
 			
@@ -177,7 +199,12 @@ public class MainController implements Initializable{
 			addListTable();
 		});
 		
-		deleteBt.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{	
+		deleteBt.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+			
+			entryDatabaseManager.removeEntry(setFieldsValue());
+			addListTable();
+			setFieldsValueZero();
+			
 		});
 		
 		searchBt.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{	
@@ -200,8 +227,13 @@ public class MainController implements Initializable{
 		
 		
 		//Table Colums name and values setting
-	
-		entryCol.setPrefWidth(100);
+		
+		fieldsAnchor.getChildren().add(entryField);
+		entryField.setLayoutX(189.0);entryField.setLayoutY(426.0);
+		entryField.setPrefHeight(26.0);entryField.setPrefWidth(72);
+		
+		entryCol.setPrefWidth(50);
+		entryCol.setMaxWidth(50);
 		entryCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 			
 			@Override
@@ -210,7 +242,22 @@ public class MainController implements Initializable{
 				return param.getValue().getValue().entry1;
 			}
 		});
+		
+		
+		dateCol.setPrefWidth(100);
+		dateCol.setMaxWidth(100);
+		dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,String>, ObservableValue<String>>() {
+			
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<EntryTable, String> param) {
+				// TODO Auto-generated method stub
+				return param.getValue().getValue().date1;
+			}
+		});
+		
+		
 		nameCol.setPrefWidth(100);
+		nameCol.setMaxWidth(250);
 		nameCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,String>, ObservableValue<String>>() {
 
 			@Override
@@ -220,7 +267,8 @@ public class MainController implements Initializable{
 			}
 		});
 		
-		hlrCol.setPrefWidth(100);
+		hlrCol.setPrefWidth(50);
+		hlrCol.setMaxWidth(50);
 		hlrCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -230,7 +278,8 @@ public class MainController implements Initializable{
 			}
 		});
 		
-		simCol.setPrefWidth(100);
+		simCol.setPrefWidth(50);
+		simCol.setMaxWidth(50);
 		simCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -240,7 +289,8 @@ public class MainController implements Initializable{
 			}
 		});
 		
-		cardCol.setPrefWidth(100);
+		cardCol.setPrefWidth(50);
+		cardCol.setMaxWidth(50);
 		cardCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -251,7 +301,8 @@ public class MainController implements Initializable{
 		});
 		
 	
-		easyLoadCol.setPrefWidth(100);
+		easyLoadCol.setPrefWidth(80);
+		easyLoadCol.setMaxWidth(100);
 		easyLoadCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -262,6 +313,7 @@ public class MainController implements Initializable{
 		});
 		
 		easyLoadReturnCol.setPrefWidth(100);
+		easyLoadReturnCol.setMaxWidth(200);
 		easyLoadReturnCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -272,6 +324,7 @@ public class MainController implements Initializable{
 		});
 		
 		easyPaisaCol.setPrefWidth(100);
+		easyPaisaCol.setMaxWidth(200);
 		easyPaisaCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -282,6 +335,7 @@ public class MainController implements Initializable{
 		});
 		
 		easyPaisaReturnCol.setPrefWidth(100);
+		easyPaisaReturnCol.setMaxWidth(200);
 		easyPaisaReturnCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -291,7 +345,8 @@ public class MainController implements Initializable{
 			}
 		});
 		
-		cashCol.setPrefWidth(100);
+		cashCol.setPrefWidth(50);
+		cashCol.setMaxWidth(80);
 		cashCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -303,6 +358,7 @@ public class MainController implements Initializable{
 		
 		
 		expensesCol.setPrefWidth(100);
+		expensesCol.setMaxWidth(100);
 		expensesCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,Number>, ObservableValue<Number>>() {
 
 			@Override
@@ -312,11 +368,27 @@ public class MainController implements Initializable{
 			}
 		});
 		
+		commentCol.setPrefWidth(300);
+		commentCol.setMaxWidth(400);
+		commentCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<EntryTable,String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<EntryTable, String> param) {
+				// TODO Auto-generated method stub
+				return param.getValue().getValue().comment1;
+			}
+		});
+		
 			
 		
 		search.textProperty().addListener((o,oldVal,newVal )->{
-			entryTable.setPredicate(EntryTable -> 	
-			EntryTable.getValue().name1.get().contains(newVal));
+			
+			entryTable.setPredicate(EntryTable ->
+			
+			EntryTable.getValue().name1.get().contains(newVal) || 
+			EntryTable.getValue().comment1.get().contains(newVal)
+			);
+			
 			});
 			
 					
@@ -327,6 +399,8 @@ public class MainController implements Initializable{
 
 				System.out.println(">>> Selected value:  "+value);
 				
+				entryField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue().toString());
+				dateCol.setText(entryTable.getSelectionModel().getSelectedItem().getValue().date1.getValue().toString());
 				chosedEmployee.setValue(entryTable.getSelectionModel().getSelectedItem().getValue().name1.getValue().toString());
 				hlrField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().hlr1.getValue().toString());
 				simField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().sim1.getValue().toString());
@@ -337,30 +411,21 @@ public class MainController implements Initializable{
 				easypaisaReturnField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyPaisaReturn1.getValue().toString());
 				cashField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().cash1.getValue().toString());
 				expensesField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().expenses1.getValue().toString());
+				commentField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().comment1.getValue().toString());
 
 			}catch (Exception tableEmpty){
 
-				Notifications.create()
-				.title("History ")
-				.text("No row has been selected or you have selected \n"
-						+ "same row again in history table.")
-				.hideAfter(Duration.seconds(3))
-				.showWarning();
+				//Notifications.create()
+				//.title("Entry Table ")
+				//.text("No row has been selected.")
+				//.hideAfter(Duration.seconds(3))
+				//.showWarning();
 				return;
 			}
 
 		});
 
 					
-			
-		
-		//options.add("Badar");
-		//employesList.setItems(options);
-		//setEmployesList(employesList);
-		
-		//table.setItems(list);
-		
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -372,6 +437,7 @@ public class MainController implements Initializable{
 
 		entryTable.getColumns().setAll(
 				entryCol,
+				dateCol,
 				nameCol,
 				hlrCol,
 				simCol,
@@ -381,7 +447,8 @@ public class MainController implements Initializable{
 				easyPaisaCol,
 				easyPaisaReturnCol,
 				cashCol,
-				expensesCol);
+				expensesCol,
+				commentCol);
 		entryTable.setRoot(root);
 		entryTable.setShowRoot(false);
 		
@@ -389,6 +456,11 @@ public class MainController implements Initializable{
 	
 	public void setFieldsValueZero(){
 		
+		//Date todayDate = new Date();
+		//DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		
+		entryField.setText("0");
+		date.setValue(LocalDate.now());
 		hlrField.setText("0");
 		simField.setText("0");
 		cardField.setText("0");
@@ -398,12 +470,15 @@ public class MainController implements Initializable{
 		easypaisaReturnField.setText("0");
 		cashField.setText("0");
 		expensesField.setText("0");
+		commentField.setText("");
 	}
 	
 	public Entry setFieldsValue(){
 		Entry entry = new Entry();
 		
-		entry.setEntryNumber((int) entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue());
+		
+		entry.setEntryNumber(Integer.valueOf(entryField.getText()));
+		entry.setDate(date.getValue().toString());
 		entry.setSelectedEmployee(chosedEmployee.getSelectionModel().getSelectedItem().toString());
 		entry.setHrl(Integer.valueOf(hlrField.getText()));
 		entry.setSim(Integer.valueOf(simField.getText()));
@@ -414,11 +489,16 @@ public class MainController implements Initializable{
 		entry.setEasyPaisaReturn(Integer.valueOf(easypaisaReturnField.getText()));
 		entry.setCash(Integer.valueOf(cashField.getText()));
 		entry.setExpenses(Integer.valueOf(expensesField.getText()));
+		entry.setComment(commentField.getText());
 		
 		return entry;
 	}
 
+	public static void setEntryNumber (String entryNumber){
+		entryField.setText(entryNumber);
+	}
 
+	
 }
 
 

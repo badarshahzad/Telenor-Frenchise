@@ -5,11 +5,13 @@ import javafx.collections.ObservableList;
 
 public class Entry {
 
-	int entryNumber ;
+	
 	String selectedEmployee = null;
+	String comment = null;
+	String date = null;
 
-
-	int hrl=0,
+	int entryNumber = 0,
+			hrl=0,
 			sim=0,
 			card=0,
 			easyLoad=0,
@@ -34,6 +36,7 @@ public class Entry {
 	public void setSelectedEmployee(String selectedEmployee) {
 		this.selectedEmployee = selectedEmployee;
 	}
+
 	
 	/**
 	 * @return the entryNumber
@@ -46,7 +49,21 @@ public class Entry {
 	 * @param entryNumber the entryNumber to set
 	 */
 	public void setEntryNumber(int entryNumber) {
-		this.entryNumber = entryNumber;
+		this.entryNumber =  entryNumber;
+	}
+	
+	/**
+	 * @return the date
+	 */
+	public String getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	/**
@@ -191,9 +208,27 @@ public class Entry {
 		this.expenses = expenses;
 	}
 	
+	
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 	/**
 	 * @return the nameListEmployes
 	 */
+	
 	
 	public ObservableList<String> getNameListEmployes() {
 		return nameListEmployes;
@@ -206,5 +241,7 @@ public class Entry {
 	public void setNameListEmployes(ObservableList<String> nameListEmployes) {
 		this.nameListEmployes = nameListEmployes;
 	}
+	
+	
 	
 }
