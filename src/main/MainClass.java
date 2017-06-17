@@ -42,7 +42,6 @@ public class MainClass extends Application {
 
 	public static void main(String[] args) {
 
-		System.out.println("xvzd");
 		launch(args);
 		//System.exit(1);
 	}

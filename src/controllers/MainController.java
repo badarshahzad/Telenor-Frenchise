@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.RenderingHints.Key;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +36,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -199,13 +202,12 @@ public class MainController implements Initializable{
 			
 			entryDatabaseManager.updateEntry(setFieldsValue());
 			addListTable();
+			setFieldsValueZero();
 		});
 		
 		deleteBt.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
 			
-			entryDatabaseManager.removeEntry(setFieldsValue());
-			addListTable();
-			setFieldsValueZero();
+			deleteEntryFromTable();
 			
 		});
 		
@@ -395,28 +397,15 @@ public class MainController implements Initializable{
 			
 			});
 			
-					
-		entryTable.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+			
+		// Mouse Listener on Entry Table 
+		
+		entryTable.addEventHandler(MouseEvent.MOUSE_CLICKED , (e)->{
 
 			try{
-				Number value = entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue();
-
-				System.out.println(">>> Selected value:  "+value);
-				
-				entryField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue().toString());
-				dateCol.setText(entryTable.getSelectionModel().getSelectedItem().getValue().date1.getValue().toString());
-				chosedEmployee.setValue(entryTable.getSelectionModel().getSelectedItem().getValue().name1.getValue().toString());
-				hlrField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().hlr1.getValue().toString());
-				simField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().sim1.getValue().toString());
-				cardField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().card1.getValue().toString());
-				easyloadField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyLoad1.getValue().toString());
-				easyloadReturnField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyLoadReturn1.getValue().toString());
-				easypaisaField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyPaisa1.getValue().toString());
-				easypaisaReturnField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyPaisaReturn1.getValue().toString());
-				cashField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().cash1.getValue().toString());
-				expensesField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().expenses1.getValue().toString());
-				commentField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().comment1.getValue().toString());
-
+			
+				tableSelectedValue();
+			
 			}catch (Exception tableEmpty){
 
 				//Notifications.create()
@@ -428,10 +417,63 @@ public class MainController implements Initializable{
 			}
 
 		});
+		
+		
+		// Key Lisnter on Entry Table 
+		
+		entryTable.setOnKeyPressed(event ->{
+			
+			//Press Enter while moving with arrow keys on table
+			if (event.getCode() == KeyCode.ENTER ) {
+				
+				tableSelectedValue();
+			}
+			
+			// Ctrl+D to delte entry
+			if(event.isControlDown() && event.getCode() == KeyCode.D){
+				
+				deleteEntryFromTable();
+			}
+			
+			// Up or Down key to update values in fields to show current value
+			
+		});
 
 					
 	}
 	
+	private void deleteEntryFromTable() {
+
+		entryDatabaseManager.removeEntry(setFieldsValue());
+		addListTable();
+		setFieldsValueZero();
+		
+	}
+
+
+	private void tableSelectedValue() {
+		// TODO Auto-generated method stub
+		Number value = entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue();
+
+		System.out.println(">>> Selected value:  "+value);
+		
+		entryField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().entry1.getValue().toString());
+		dateCol.setText(entryTable.getSelectionModel().getSelectedItem().getValue().date1.getValue().toString());
+		chosedEmployee.setValue(entryTable.getSelectionModel().getSelectedItem().getValue().name1.getValue().toString());
+		hlrField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().hlr1.getValue().toString());
+		simField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().sim1.getValue().toString());
+		cardField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().card1.getValue().toString());
+		easyloadField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyLoad1.getValue().toString());
+		easyloadReturnField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyLoadReturn1.getValue().toString());
+		easypaisaField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyPaisa1.getValue().toString());
+		easypaisaReturnField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().easyPaisaReturn1.getValue().toString());
+		cashField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().cash1.getValue().toString());
+		expensesField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().expenses1.getValue().toString());
+		commentField.setText(entryTable.getSelectionModel().getSelectedItem().getValue().comment1.getValue());
+		
+	}
+
+
 	@SuppressWarnings("unchecked")
 	public void addListTable(){
 		
@@ -474,7 +516,7 @@ public class MainController implements Initializable{
 		easypaisaReturnField.setText("0");
 		cashField.setText("0");
 		expensesField.setText("0");
-		commentField.setText("");
+		commentField.setText(" ");
 	}
 	
 	public Entry setFieldsValue(){

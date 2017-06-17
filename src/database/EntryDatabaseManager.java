@@ -101,10 +101,6 @@ public class EntryDatabaseManager implements ICrud{
 			prepStmt.setInt(1, entry.getEntryNumber());
 			prepStmt.executeUpdate();
 			
-			System.out.println("Removing entry number is : "+ entry.getEntryNumber());
-			
-			System.out.println(">>> Remove entry working properly.");
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,11 +175,6 @@ public class EntryDatabaseManager implements ICrud{
 	        		  
 	          prepStmt.executeUpdate();
 	          
-	         System.out.println("Updated entry number: "+entry.getEntryNumber());
-	          
-	          System.out.println("Selected employee values"+ entry.getSelectedEmployee());
-
-	         System.out.println(">>> Successfully update query working");
 	          } catch (SQLException e) {
 					// TODO Auto-generated catch block
 	        	  System.out.println("*** Error : update query working");
