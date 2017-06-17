@@ -21,8 +21,10 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.sun.media.jfxmedia.events.PlayerTimeListener;
 
 import database.EntryDatabaseManager;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -380,14 +382,16 @@ public class MainController implements Initializable{
 		});
 		
 			
-		
+	
 		search.textProperty().addListener((o,oldVal,newVal )->{
 			
-			entryTable.setPredicate(EntryTable ->
-			
-			EntryTable.getValue().name1.get().contains(newVal) || 
-			EntryTable.getValue().comment1.get().contains(newVal)
-			);
+					// TODO Auto-generated method stub
+					entryTable.setPredicate(EntryTable ->
+					
+					EntryTable.getValue().name1.get().contains(newVal)// || 
+					//EntryTable.getValue().comment1.get().contains(newVal)
+					);		
+		
 			
 			});
 			

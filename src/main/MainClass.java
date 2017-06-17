@@ -34,7 +34,7 @@ public class MainClass extends Application {
 
 		Scene scene = new Scene(pane);
 	//	scene.getStylesheets().add(getClass().getResource("/stylesheet.css").toExternalForm());
-		stage.setTitle("Jfx Browser");
+		stage.setTitle("Sudo");
 		stage.setScene(scene);
 		stage.show();
 
