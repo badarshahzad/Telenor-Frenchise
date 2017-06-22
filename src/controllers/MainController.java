@@ -25,6 +25,7 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.sun.media.jfxmedia.events.PlayerTimeListener;
 
+import database.EmployeeDatabaseManager;
 import database.EntryDatabaseManager;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +46,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.converter.LocalDateStringConverter;
 import model.Entry;
+import model.EntryTable;
 
 public class MainController implements Initializable{
 
@@ -166,6 +168,8 @@ public class MainController implements Initializable{
 		// TODO Auto-generated method stub
 
 		entryDatabaseManager = new EntryDatabaseManager();
+	///EmployeeDatabaseManager emp = new EmployeeDatabaseManager();
+		
 		setFieldsValueZero();
 		addListTable();
 
@@ -435,8 +439,6 @@ public class MainController implements Initializable{
 				deleteEntryFromTable();
 			}
 			
-			// Up or Down key to update values in fields to show current value
-			
 		});
 
 					
@@ -543,7 +545,6 @@ public class MainController implements Initializable{
 	public static void setEntryNumber (String entryNumber){
 		entryField.setText(entryNumber);
 	}
-
 	
 }
 

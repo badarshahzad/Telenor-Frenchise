@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainBpane" prefHeight="600.0" prefWidth="650.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+   <left>
+      <VBox fx:id="paneForChart" minWidth="300.0" opacity="0.84" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" />
+         </BorderPane.margin>
+         <children>
+            <BorderPane>
+               <center>
+                  <AnchorPane fx:id="fieldsAnchor" prefHeight="600.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Name" />
+                        <Label layoutX="14.0" layoutY="44.0" text="HLR" />
+                        <Label layoutX="14.0" layoutY="74.0" text="SIM" />
+                        <Label layoutX="14.0" layoutY="104.0" text="Card" />
+                        <Label layoutX="14.0" layoutY="134.0" text="Easyload" />
+                        <Label layoutX="14.0" layoutY="164.0" text="Return" />
+                        <Label layoutX="14.0" layoutY="194.0" text="Easypaisa" />
+                        <Label layoutX="14.0" layoutY="224.0" text="Return" />
+                        <Label layoutX="14.0" layoutY="254.0" text="Cash" />
+                        <Label layoutX="14.0" layoutY="284.0" text="Expenses" />
+                        <JFXComboBox fx:id="chosedEmployee" layoutX="64.0" layoutY="9.0" prefWidth="200.0" />
+                        <TextField fx:id="hlrField" layoutX="90.0" layoutY="40.0" />
+                        <TextField fx:id="simField" layoutX="90.0" layoutY="70.0" />
+                        <TextField fx:id="cardField" layoutX="90.0" layoutY="100.0" />
+                        <TextField fx:id="easyloadField" layoutX="90.0" layoutY="130.0" />
+                        <TextField fx:id="easyloadReturnField" layoutX="90.0" layoutY="160.0" />
+                        <TextField fx:id="easypaisaField" layoutX="90.0" layoutY="190.0" />
+                        <TextField fx:id="easypaisaReturnField" layoutX="90.0" layoutY="220.0" />
+                        <TextField fx:id="cashField" layoutX="90.0" layoutY="250.0" />
+                        <TextField fx:id="expensesField" layoutX="90.0" layoutY="280.0" />
+                        <JFXTextArea fx:id="commentField" layoutX="14.0" layoutY="344.0" maxWidth="247.0" minWidth="225.0" prefHeight="64.0" prefWidth="247.0" />
+                        <Label layoutX="16.0" layoutY="426.0" text="Entry Number:" />
+                        <Label layoutX="16.0" layoutY="322.0" text="Comment" />
+                     </children>
+                  </AnchorPane>
+               </center>
+               <bottom>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXDatePicker fx:id="date">
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </JFXDatePicker>
+                        <JFXCheckBox fx:id="printCheck" text="Print Entry">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></JFXCheckBox>
+                        <HBox prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="newBt" buttonType="RAISED" opacity="0.9" prefHeight="30.0" prefWidth="60.0" ripplerFill="#3c7cea" style="-fx-background-color: #3c7cea;" text="New" textFill="WHITE" />
+                              <JFXButton fx:id="editBt" buttonType="RAISED" opacity="0.9" prefHeight="30.0" prefWidth="60.0" ripplerFill="#3c7cea" style="-fx-background-color: #3c7cea;" text="Edit" textFill="WHITE" />
+                              <JFXButton fx:id="deleteBt" buttonType="RAISED" opacity="0.9" prefHeight="30.0" prefWidth="75.0" ripplerFill="#ee3954" style="-fx-background-color: #ee3940;" text="Delete" textFill="WHITE" />
+                              <JFXButton fx:id="clearBt" buttonType="RAISED" opacity="0.9" prefHeight="30.0" prefWidth="60.0" ripplerFill="#3c7cea" style="-fx-background-color: #ee3955;" text="Clear" textFill="WHITE" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </bottom>
+            </BorderPane>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <JFXTreeTableView fx:id="entryTable" prefHeight="200.0" prefWidth="200.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" right="5.0" />
+               </BorderPane.margin></JFXTreeTableView>
+         </center>
+         <top>
+            <GridPane opacity="0.84" style="-fx-background-color: #2959ea;" BorderPane.alignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="364.0" minWidth="10.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" prefWidth="300.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label prefWidth="119.0" text="Sudo" textFill="#f4f4f4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <JFXTextField fx:id="search" focusColor="WHITE" minWidth="200.0" prefWidth="400.0" unFocusColor="#f8f8f8" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXButton fx:id="refreshBt" buttonType="RAISED" opacity="0.9" prefHeight="40.0" prefWidth="70.0" ripplerFill="#3c7cea" style="-fx-background-color: #3c7cea;" text="Refresh" textFill="WHITE" GridPane.columnIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="excelBt" buttonType="RAISED" opacity="0.9" prefHeight="40.0" prefWidth="70.0" ripplerFill="#3c7cea" style="-fx-background-color: #3c7cea;" text="Excel" textFill="WHITE" GridPane.columnIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="searchBt" buttonType="RAISED" style="-fx-background-color: #3c7cde;" text="Search" textFill="#f4f4f4" GridPane.columnIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="detailsBt" buttonType="RAISED" style="-fx-background-color: #3c7cde;" text="Details" textFill="#f4f4f4" GridPane.columnIndex="3">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </JFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </GridPane>
+         </top>
+      </BorderPane>
+   </center>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Options">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Employees" />
+                  <MenuItem mnemonicParsing="false" text="Employees" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Settings">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+        </menus>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </MenuBar>
+   </top>
+</BorderPane>

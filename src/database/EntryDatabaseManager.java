@@ -5,22 +5,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import controllers.EntryTable;
 import controllers.MainController;
 import entry.database.interfaces.ICrud;
 import model.Entry;
+import model.EntryTable;
 import javafx.collections.ObservableList;
 
-public class EntryDatabaseManager implements ICrud{
+public class EntryDatabaseManager extends DatabaseConnection implements ICrud{
 	
-	
-	private static final String JDBC_DRIVER = "org.sqlite.JDBC";
-	private static final String DB_URL = "jdbc:sqlite:~/History.db";
-	private Connection connection;
-	private Statement stmt;
-	private PreparedStatement prepStmt ;
-	
-	private static final String CREATE_TABLE = "CREATE TABLE if not exists entryTable"
+	private static final String CREATE_Entry_TABLE = "CREATE TABLE if not exists entryTable"
 			+ "(entryId INTEGER PRIMARY KEY,"
 			+ "date varchar (30),"
 			+ "empName varchar (30),"
@@ -34,24 +27,10 @@ public class EntryDatabaseManager implements ICrud{
 			+ "cash int,"
 			+ "expenses int,"
 			+ "comment text)";
-			
-	public EntryDatabaseManager(){
-		openConnection();
-	}
 	
-	public void openConnection() {
 
-		try{
-			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:History.db");
-			//stmt = connection.createStatement();
-			prepStmt = connection.prepareStatement(CREATE_TABLE);
-			prepStmt.executeUpdate();
-			
-			System.out.println(">>> Successfully driver attach and table created.");
-		}catch(Exception e){
-			System.out.println("*** Error: Database Driver is not working and Statment is not executed. ");
-		}
+	public EntryDatabaseManager(){
+		openConnection(CREATE_Entry_TABLE );
 	}
 	
 	@Override

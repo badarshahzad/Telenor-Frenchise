@@ -1,4 +1,4 @@
-package controllers;
+package model;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -8,19 +8,19 @@ import javafx.beans.value.ObservableValue;
 
 public class EntryTable extends RecursiveTreeObject<EntryTable> {
 	
-	ObservableValue<Number> entry1;
-	StringProperty date1;
-	StringProperty name1; 
-	ObservableValue<Number> hlr1;
-	ObservableValue<Number> sim1;
-	ObservableValue<Number> card1;
-	ObservableValue<Number> easyLoad1;
-	ObservableValue<Number> easyLoadReturn1;
-	ObservableValue<Number> easyPaisa1;
-	ObservableValue<Number> easyPaisaReturn1;
-	ObservableValue<Number> cash1;
-	ObservableValue<Number> expenses1;
-	StringProperty comment1;
+	public ObservableValue<Number> entry1;
+	public StringProperty date1;
+	public StringProperty name1; 
+	public ObservableValue<Number> hlr1;
+	public ObservableValue<Number> sim1;
+	public ObservableValue<Number> card1;
+	public ObservableValue<Number> easyLoad1;
+	public ObservableValue<Number> easyLoadReturn1;
+	public ObservableValue<Number> easyPaisa1;
+	public ObservableValue<Number> easyPaisaReturn1;
+	public ObservableValue<Number> cash1;
+	public ObservableValue<Number> expenses1;
+	public StringProperty comment1;
 	
 	public EntryTable(int entry,String date, String name,int hlr, int sim, int card, int easyLoad, int easyLoadReturn, int easyPaisa
 			,int easyPaisaReturn,int cash, int expenses,String comment) {

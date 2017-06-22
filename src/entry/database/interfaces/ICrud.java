@@ -1,10 +1,8 @@
 package entry.database.interfaces;
 
-import java.util.ArrayList;
-
-import controllers.EntryTable;
 import javafx.collections.ObservableList;
 import model.Entry;
+import model.EntryTable;
 public interface ICrud {
 	
 	public void addEntry(Entry entry);
