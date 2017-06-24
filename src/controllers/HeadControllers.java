@@ -4,29 +4,18 @@ import java.io.IOException;
 
 import com.jfoenix.controls.JFXTabPane;
 
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
-public class HeadControllers extends Application {
+public class HeadControllers  {
 
 	BorderPane bpane = new BorderPane();
 
-	JFXTabPane tabPane = new JFXTabPane();
-
-	Tab stockTab = new Tab("Transaction");
-	Tab entryTab = new Tab("Stock");
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-
+	public BorderPane getBpane() {
 		setTabsViews();
 
 		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
@@ -49,15 +38,18 @@ public class HeadControllers extends Application {
 
 		bpane.setCenter(tabPane);
 
-		Scene scene = new Scene(bpane);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
+		return bpane;
 	}
 
-	public static void main(String args[]) {
-		launch(args);
+	public void setBpane(BorderPane bpane) {
+		this.bpane = bpane;
 	}
+
+	JFXTabPane tabPane = new JFXTabPane();
+
+	Tab stockTab = new Tab("Transaction");
+	Tab entryTab = new Tab("Stock");
+
 
 	public void setTabsViews() {
 
