@@ -10,6 +10,4 @@ public interface ICrud {
 	public ObservableList<EntryTable> getAllEntries(ObservableList<EntryTable> tableDataList);
 	public void updateEntry(Entry entry);
 	public boolean search(String keyword);
-	
-
 }
